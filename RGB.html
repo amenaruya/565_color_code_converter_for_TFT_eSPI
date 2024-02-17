@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Code Converter</title>
+</head>
+<body>
+    <h2>Color Code Converter</h2>
+    <input type="text" id="colorInput" placeholder="#xxxxxx">
+    <button onclick="convertColor()">Convert</button>
+    <p id="hexOutput"></p>
+    <div id="colorDisplay" style="width: 100px; height: 100px; margin-top: 10px;"></div>
+    <p id="red"></span></p>
+    <p id="green"></span></p>
+    <p id="blue"></span></p>
+
+    <script>
+        function codeToRgb(hexCode) {
+            const hex = hexCode.replace(/^#/, '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            return [r, g, b];
+        }
+
+        function rgbTo565(r, g, b) {
+            const red5bit = Math.floor(r * 31 / 255);
+            const green6bit = Math.floor(g * 63 / 255);
+            const blue5bit = Math.floor(b * 31 / 255);
+
+            // 5-6-5ビット形式にビットを組み合わせる
+            const rgb565 = (red5bit << 11) | (green6bit << 5) | blue5bit;
+
+            return rgb565.toString(16).toUpperCase().padStart(4, "0");
+        }
+
+        function convertColor() {
+            const colorInput = document.getElementById('colorInput').value.trim();
+            const hexOutput = document.getElementById('hexOutput');
+            const colorDisplay = document.getElementById('colorDisplay');
+            const RValue = document.getElementById("red");
+            const GValue = document.getElementById("green");
+            const BValue = document.getElementById("blue");
+            
+            if (!colorInput) {
+                hexOutput.innerText = 'Please enter a color code!';
+                colorDisplay.style.backgroundColor = '';
+                return;
+            }
+
+            const [r, g, b] = codeToRgb(colorInput);
+            const hexCode = rgbTo565(r, g, b);
+            hexOutput.innerText = 'RGB: 0x' + hexCode;
+            RValue.innerText = `R: ${r}`;
+            GValue.innerText = `R: ${g}`;
+            BValue.innerText = `R: ${b}`;
+
+            colorDisplay.style.backgroundColor = colorInput;
+        }
+    </script>
+</body>
+</html>
